@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using BusinessDataFetcher.model;
+using BusinessDataFetcher.Model;
 
 namespace BusinessDataFetcher
 {
     public partial class MainForm : Form
     {
-        public static readonly bool DEBUG = ConfigurationManager.AppSettings["logging"] == "true";
+        public static readonly bool DEBUG = Preferences.DEBUG;
+        public readonly static Encoding ENCODING = Encoding.GetEncoding("iso-8859-2");
         private const string BASE_URL = "http://www.krs-online.com.pl/";
         private const string SEARCH_URL = "http://www.krs-online.com.pl/?p=6&look=";
-        private List<Firm> FinalList = new List<Firm>();
+        private List<BasicFirm> BasicList = new List<BasicFirm>();
         private WebClient Wc;
 
         public MainForm()
@@ -26,20 +27,21 @@ namespace BusinessDataFetcher
             if (DEBUG) Logger.Init();
 
             Wc = new WebClient();
+            Wc.Encoding = ENCODING;
             HTMLHelper.AddHeadersTo(ref Wc);
 
             if (DEBUG)
             {
-                string input = File.ReadAllText("input.txt");
+                string input = File.ReadAllText("input.txt", ENCODING);
                 ParseListDownload(input);
             }
         }
 
-        public void DownloadFullData(List<FirmRequest> list)
+        public void DownloadFullData(List<BasicFirm> list)
         {
             new Thread(() =>
             {
-                foreach (FirmRequest request in list)
+                foreach (BasicFirm request in list)
                 {
                     try
                     {
@@ -64,8 +66,9 @@ namespace BusinessDataFetcher
 
         public void DownloadListStart(string url)
         {
-            Wc.DownloadStringCompleted += webClient_FirstDownloadCompleted;
-            Wc.DownloadStringAsync(new Uri(url));
+            Wc.DownloadDataCompleted += webClient_ListDownloadCompleted;
+            Wc.DownloadDataAsync(new Uri(url));
+            SetToWaitState(true);
             Logger.WriteLine("Downloading started. Url: " + url);
         }
 
@@ -73,16 +76,24 @@ namespace BusinessDataFetcher
         {
             Logger.WriteLine("Page Fetched.");
             string html = HTMLHelper.TrimScript(input);
-            this.wb_MAIN.DocumentText = html;
 
-            List<FirmRequest> col = HTMLHelper.GetFirmsRequest(HTMLHelper.GetFirmsHTMLCollection(HTMLHelper.GetFirmsListHTML(html)));
-            DownloadFullData(col);
+            List<BasicFirm> col = HTMLHelper.GetBasicFirms(HTMLHelper.GetFirmsHTMLCollection(HTMLHelper.GetFirmsListHTML(html)));
+            BasicList = col;
+            PopulateListView(BasicList);
         }
 
-        private void bt_serach_Click(object sender, EventArgs e)
+        public void PopulateListView(List<BasicFirm> list)
         {
-            string url = BASE_URL + this.tb_NIP.Text;
-            DownloadListStart(url);
+            foreach (BasicFirm b in list)
+            {
+                string[] row = { b.Description, b.Address.SeparateBy(","), b.Url };
+                listView1.Items.Add(b.Name).SubItems.AddRange(row);
+            }
+        }
+
+        public void SetToWaitState(bool x)
+        {
+            UseWaitCursor = x;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -96,11 +107,50 @@ namespace BusinessDataFetcher
             base.OnClosing(e);
         }
 
-        private void webClient_FirstDownloadCompleted(object sender, DownloadStringCompletedEventArgs e)
+        private void bt_serach_Click(object sender, EventArgs e)
         {
+            string url = SEARCH_URL + this.tb_NIP.Text;
+            DownloadListStart(url);
+        }
+
+        /// <summary>
+        /// Creates new CSV Represenation in the TextBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string output = String.Empty;
+
+            foreach (ListViewItem x in listView1.SelectedItems)
+            {
+                int i = x.Index;
+                if (i > 0 && i < BasicList.Count)
+                {
+                    BasicFirm item = BasicList[i];
+                    string[] fields = { item.Name, item.Description, item.Address.SeparateBy(";") };
+                    output += string.Join(";", fields) + Environment.NewLine;
+                }
+            }
+            textBox1.Text = output;
+        }
+
+        private void ts_About_Click(object sender, EventArgs e)
+        {
+            new AboutBox().ShowDialog();
+        }
+
+        private void ts_CloseApp_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void webClient_ListDownloadCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            SetToWaitState(false);
             if (!e.Cancelled && e.Error == null)
             {
-                string result = (string)e.Result;
+                string result = ENCODING.GetString(e.Result);
                 ParseListDownload(result);
             }
             else
@@ -119,16 +169,6 @@ namespace BusinessDataFetcher
             {
                 MessageBox.Show(e.Error.Message, "Błąd przy pobiereaniu danych");
             }
-        }
-
-        private void ts_About_Click(object sender, EventArgs e)
-        {
-            new AboutBox().ShowDialog();
-        }
-
-        private void ts_CloseApp_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }

@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessDataFetcher
+namespace BusinessDataFetcher.Model
 {
-    class Firm
+    namespace Model
     {
-
-        public string Url;
-        public string Name;
-
-        public Firm(string url, string name)
+        public class Firm
         {
-            this.Url = url;
-            this.Name = name;
+            public string Url;
+            public string Name;
+
+            public Firm(string url, string name)
+            {
+                this.Url = url;
+                this.Name = name;
+            }
         }
     }
 }

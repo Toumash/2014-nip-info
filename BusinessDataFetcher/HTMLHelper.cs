@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
-using BusinessDataFetcher.model;
+using BusinessDataFetcher.Model;
 
 namespace BusinessDataFetcher
 {
@@ -38,15 +38,15 @@ namespace BusinessDataFetcher
             string rEnd = "<div class=\"clear\"></div>.*<div class=\"adsense_bottom\">";
             Match match = Regex.Match(html, rStart + "(.*?)" + rEnd, RegexOptions.Singleline);
             string output = match.Success ? match.Groups[1].Value : String.Empty;
-            GetFirmsHTMLCollection(output);
             return output;
         }
 
-        public static List<FirmRequest> GetFirmsRequest(string[] data)
+        public static List<BasicFirm> GetBasicFirms(string[] data)
         {
-            List<FirmRequest> list = new List<FirmRequest>();
+            List<BasicFirm> list = new List<BasicFirm>();
             string urlPattern = "<a href=\"(.*?)\">";
             string namePattern = "<b>(.*?)</b>";
+            string addressPattern = "</a>.*?<br>(.*?)<br>(.*)";
             int i = 0;
             foreach (string f in data)
             {
@@ -69,8 +69,21 @@ namespace BusinessDataFetcher
                     name = m.Groups[1].Value;
                     Logger.WriteLine(name, ConsoleColor.DarkGreen);
                 }
+                //ADDRESS
+                m = Regex.Match(f, addressPattern, RegexOptions.Singleline);
+                string address = String.Empty;
+                string description = String.Empty;
+                if (m.Success)
+                {
+                    // deletes all windows strange new line breaks
+                    description = Regex.Replace(m.Groups[1].Value, @"\r\n", "", RegexOptions.Singleline).Trim();
+                    address = m.Groups[2].Value.Trim();
 
-                list.Add(new FirmRequest(url, name));
+                    Logger.WriteLine(address, ConsoleColor.DarkGreen);
+                    Logger.WriteLine(description, ConsoleColor.DarkGreen);
+                }
+
+                list.Add(new BasicFirm(url, name, Address.FromString(address), description));
 
                 i++;
             }

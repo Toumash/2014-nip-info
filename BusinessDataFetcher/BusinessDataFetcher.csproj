@@ -7,7 +7,7 @@
     <ProjectGuid>{8EC7B7F1-0ADC-40C7-B545-67BE986220DC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BusinessDataFetcher</RootNamespace>
+    <RootNamespace>BusinessDataFetcher.Model</RootNamespace>
     <AssemblyName>BusinessDataFetcher</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -66,7 +66,8 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="model\Firm.cs" />
+    <Compile Include="Model\Address.cs" />
+    <Compile Include="Model\Firm.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,7 +76,7 @@
     </Compile>
     <Compile Include="HTMLHelper.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="model\FirmRequest.cs" />
+    <Compile Include="Model\BasicFirm.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Program.cs" />
