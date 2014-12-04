@@ -46,7 +46,7 @@ namespace BusinessDataFetcher
             List<BasicFirm> list = new List<BasicFirm>();
             string urlPattern = "<a href=\"(.*?)\">";
             string namePattern = "<b>(.*?)</b>";
-            string addressPattern = "</a>.*?<br>(.*?)<br>(.*)";
+            string addressPattern = "</a>.*?<br.*?>(.*?)<br.*?>(.*)";
             int i = 0;
             foreach (string f in data)
             {
@@ -69,6 +69,7 @@ namespace BusinessDataFetcher
                     name = m.Groups[1].Value;
                     Logger.WriteLine(name, ConsoleColor.DarkGreen);
                 }
+
                 //ADDRESS
                 m = Regex.Match(f, addressPattern, RegexOptions.Singleline);
                 string address = String.Empty;
@@ -90,7 +91,7 @@ namespace BusinessDataFetcher
             return list;
         }
 
-        public static string TrimScript(string htmlDocText)
+        public static string TrimJS(string htmlDocText)
         {
             string pattern = @"(?s)<script.*?(/>|</script>)";
             return Regex.Replace(htmlDocText, pattern, "", RegexOptions.Singleline);

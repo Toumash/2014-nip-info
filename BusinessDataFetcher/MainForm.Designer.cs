@@ -42,6 +42,7 @@
             this.H_D = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.H_A = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.H_U = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.bt_CLEAR = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +52,7 @@
             this.tb_NIP.Name = "tb_NIP";
             this.tb_NIP.Size = new System.Drawing.Size(270, 20);
             this.tb_NIP.TabIndex = 0;
-            this.tb_NIP.Text = "np:80808080";
+            this.tb_NIP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tb_NIP_KeyDown);
             // 
             // lb_instruction
             // 
@@ -67,7 +68,7 @@
             this.bt_serach.Location = new System.Drawing.Point(382, 25);
             this.bt_serach.Name = "bt_serach";
             this.bt_serach.Size = new System.Drawing.Size(75, 23);
-            this.bt_serach.TabIndex = 4;
+            this.bt_serach.TabIndex = 1;
             this.bt_serach.Text = "Szukaj";
             this.bt_serach.UseVisualStyleBackColor = true;
             this.bt_serach.Click += new System.EventHandler(this.bt_serach_Click);
@@ -107,9 +108,11 @@
             // 
             // textBox1
             // 
+            this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(12, 248);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox1.Size = new System.Drawing.Size(860, 83);
             this.textBox1.TabIndex = 8;
             // 
@@ -121,6 +124,7 @@
             this.H_A,
             this.H_U});
             this.listView1.FullRowSelect = true;
+            this.listView1.LabelEdit = true;
             this.listView1.Location = new System.Drawing.Point(12, 54);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(860, 188);
@@ -148,11 +152,22 @@
             // 
             this.H_U.Text = "Url";
             // 
+            // bt_CLEAR
+            // 
+            this.bt_CLEAR.Location = new System.Drawing.Point(711, 25);
+            this.bt_CLEAR.Name = "bt_CLEAR";
+            this.bt_CLEAR.Size = new System.Drawing.Size(161, 23);
+            this.bt_CLEAR.TabIndex = 10;
+            this.bt_CLEAR.Text = "Wyczyść";
+            this.bt_CLEAR.UseVisualStyleBackColor = true;
+            this.bt_CLEAR.Click += new System.EventHandler(this.bt_CLEAR_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(880, 341);
+            this.Controls.Add(this.bt_CLEAR);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.bt_serach);
@@ -161,6 +176,7 @@
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Firm data downloader";
             this.menuStrip1.ResumeLayout(false);
@@ -185,6 +201,7 @@
         public System.Windows.Forms.ColumnHeader H_A;
         public System.Windows.Forms.ColumnHeader H_U;
         private System.Windows.Forms.ColumnHeader H_D;
+        private System.Windows.Forms.Button bt_CLEAR;
     }
 }
 

@@ -75,9 +75,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="HTMLHelper.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="Util\Logger.cs" />
     <Compile Include="Model\BasicFirm.cs" />
-    <Compile Include="NativeMethods.cs" />
+    <Compile Include="Util\NativeMethods.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

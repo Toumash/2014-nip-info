@@ -9,15 +9,10 @@
             public string Name;
             public string Url;
 
-            public BasicFirm(string url, string name)
+            public BasicFirm(string url, string name, Address address, string description)
             {
                 this.Url = url;
                 this.Name = name;
-            }
-
-            public BasicFirm(string url, string name, Address address, string description)
-                : this(url, name)
-            {
                 this.Address = address;
                 this.Description = description;
             }
