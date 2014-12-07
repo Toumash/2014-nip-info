@@ -6,7 +6,7 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BusinessDataFetcher")]
+[assembly: AssemblyTitle("Business Data Fetcher")]
 [assembly: AssemblyDescription("Pobieracz danych Polskich firm. Umożliwia uzyskanie podstawowych informacji o każdej firmie w Polsce, dzięki serwisowi krs-online.com.pl")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CodeSharks")]

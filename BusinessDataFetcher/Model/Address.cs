@@ -20,20 +20,16 @@ namespace BusinessDataFetcher
             public static Address FromString(string html)
             {
                 string[] x = html.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                if (x.Length > 0)
+                string woj = x[0].Trim();
+                string city = string.Empty;
+                string street = string.Empty;
+                if (x.Length > 1)
+                    city = x[1].Trim();
+                if (x.Length > 2)
                 {
-                    string woj = x[0].Trim();
-                    string city = string.Empty;
-                    string street = string.Empty;
-                    if (x.Length > 1)
-                        city = x[1].Trim();
-                    if (x.Length > 2)
-                    {
-                        street = x[2].Trim();
-                    }
-                    return new Address(woj, city, street);
+                    street = x[2].Trim();
                 }
-                return null;
+                return new Address(woj, city, street);
             }
 
             public string SeparateBy(string separator)

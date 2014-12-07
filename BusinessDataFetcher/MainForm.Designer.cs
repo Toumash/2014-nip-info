@@ -31,24 +31,26 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tb_NIP = new System.Windows.Forms.TextBox();
             this.lb_instruction = new System.Windows.Forms.Label();
-            this.bt_serach = new System.Windows.Forms.Button();
+            this.bt_SEARCH = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.oProgramieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ts_About = new System.Windows.Forms.ToolStripMenuItem();
             this.ts_CloseApp = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.tb_OUT = new System.Windows.Forms.TextBox();
+            this.lv_MAIN = new System.Windows.Forms.ListView();
             this.H_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.H_D = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.H_A = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.H_U = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.bt_CLEAR = new System.Windows.Forms.Button();
+            this.lb_NO_ENTRIES = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tb_NIP
             // 
-            this.tb_NIP.Location = new System.Drawing.Point(106, 27);
+            this.tb_NIP.Location = new System.Drawing.Point(85, 26);
             this.tb_NIP.Name = "tb_NIP";
             this.tb_NIP.Size = new System.Drawing.Size(270, 20);
             this.tb_NIP.TabIndex = 0;
@@ -57,21 +59,21 @@
             // lb_instruction
             // 
             this.lb_instruction.AutoSize = true;
-            this.lb_instruction.Location = new System.Drawing.Point(12, 31);
+            this.lb_instruction.Location = new System.Drawing.Point(54, 30);
             this.lb_instruction.Name = "lb_instruction";
-            this.lb_instruction.Size = new System.Drawing.Size(88, 13);
+            this.lb_instruction.Size = new System.Drawing.Size(25, 13);
             this.lb_instruction.TabIndex = 3;
-            this.lb_instruction.Text = "Nip/Nazwa Firmy";
+            this.lb_instruction.Text = "NIP";
             // 
-            // bt_serach
+            // bt_SEARCH
             // 
-            this.bt_serach.Location = new System.Drawing.Point(382, 25);
-            this.bt_serach.Name = "bt_serach";
-            this.bt_serach.Size = new System.Drawing.Size(75, 23);
-            this.bt_serach.TabIndex = 1;
-            this.bt_serach.Text = "Szukaj";
-            this.bt_serach.UseVisualStyleBackColor = true;
-            this.bt_serach.Click += new System.EventHandler(this.bt_serach_Click);
+            this.bt_SEARCH.Location = new System.Drawing.Point(361, 24);
+            this.bt_SEARCH.Name = "bt_SEARCH";
+            this.bt_SEARCH.Size = new System.Drawing.Size(75, 23);
+            this.bt_SEARCH.TabIndex = 1;
+            this.bt_SEARCH.Text = "Szukaj";
+            this.bt_SEARCH.UseVisualStyleBackColor = true;
+            this.bt_SEARCH.Click += new System.EventHandler(this.bt_serach_Click);
             // 
             // menuStrip1
             // 
@@ -79,7 +81,8 @@
             this.oProgramieToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(880, 24);
+            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.menuStrip1.Size = new System.Drawing.Size(871, 24);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -106,42 +109,41 @@
             this.ts_CloseApp.Text = "Zamknij";
             this.ts_CloseApp.Click += new System.EventHandler(this.ts_CloseApp_Click);
             // 
-            // textBox1
+            // tb_OUT
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(12, 248);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(860, 83);
-            this.textBox1.TabIndex = 8;
+            this.tb_OUT.Enabled = false;
+            this.tb_OUT.Location = new System.Drawing.Point(12, 248);
+            this.tb_OUT.Multiline = true;
+            this.tb_OUT.Name = "tb_OUT";
+            this.tb_OUT.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tb_OUT.Size = new System.Drawing.Size(860, 83);
+            this.tb_OUT.TabIndex = 8;
             // 
-            // listView1
+            // lv_MAIN
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lv_MAIN.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.H_Name,
             this.H_D,
             this.H_A,
             this.H_U});
-            this.listView1.FullRowSelect = true;
-            this.listView1.LabelEdit = true;
-            this.listView1.Location = new System.Drawing.Point(12, 54);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(860, 188);
-            this.listView1.TabIndex = 9;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView_SelectedIndexChanged);
+            this.lv_MAIN.FullRowSelect = true;
+            this.lv_MAIN.Location = new System.Drawing.Point(12, 54);
+            this.lv_MAIN.Name = "lv_MAIN";
+            this.lv_MAIN.Size = new System.Drawing.Size(860, 188);
+            this.lv_MAIN.TabIndex = 9;
+            this.lv_MAIN.UseCompatibleStateImageBehavior = false;
+            this.lv_MAIN.View = System.Windows.Forms.View.Details;
+            this.lv_MAIN.SelectedIndexChanged += new System.EventHandler(this.listView_SelectedIndexChanged);
             // 
             // H_Name
             // 
             this.H_Name.Text = "Nazwa";
-            this.H_Name.Width = 248;
+            this.H_Name.Width = 255;
             // 
             // H_D
             // 
             this.H_D.Text = "Opis";
-            this.H_D.Width = 237;
+            this.H_D.Width = 327;
             // 
             // H_A
             // 
@@ -162,15 +164,38 @@
             this.bt_CLEAR.UseVisualStyleBackColor = true;
             this.bt_CLEAR.Click += new System.EventHandler(this.bt_CLEAR_Click);
             // 
+            // lb_NO_ENTRIES
+            // 
+            this.lb_NO_ENTRIES.AutoSize = true;
+            this.lb_NO_ENTRIES.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lb_NO_ENTRIES.ForeColor = System.Drawing.Color.Crimson;
+            this.lb_NO_ENTRIES.Location = new System.Drawing.Point(493, 26);
+            this.lb_NO_ENTRIES.Name = "lb_NO_ENTRIES";
+            this.lb_NO_ENTRIES.Size = new System.Drawing.Size(139, 18);
+            this.lb_NO_ENTRIES.TabIndex = 11;
+            this.lb_NO_ENTRIES.Text = "BRAK WYNIKÓW";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(0, 336);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.statusStrip1.Size = new System.Drawing.Size(871, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 12;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(880, 341);
+            this.ClientSize = new System.Drawing.Size(871, 358);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.lb_NO_ENTRIES);
             this.Controls.Add(this.bt_CLEAR);
-            this.Controls.Add(this.listView1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.bt_serach);
+            this.Controls.Add(this.lv_MAIN);
+            this.Controls.Add(this.tb_OUT);
+            this.Controls.Add(this.bt_SEARCH);
             this.Controls.Add(this.lb_instruction);
             this.Controls.Add(this.tb_NIP);
             this.Controls.Add(this.menuStrip1);
@@ -190,18 +215,20 @@
 
         private System.Windows.Forms.TextBox tb_NIP;
         private System.Windows.Forms.Label lb_instruction;
-        private System.Windows.Forms.Button bt_serach;
+        private System.Windows.Forms.Button bt_SEARCH;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem oProgramieToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ts_CloseApp;
         private System.Windows.Forms.ToolStripMenuItem ts_About;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.TextBox tb_OUT;
+        private System.Windows.Forms.ListView lv_MAIN;
         public System.Windows.Forms.ColumnHeader H_Name;
         public System.Windows.Forms.ColumnHeader H_A;
         public System.Windows.Forms.ColumnHeader H_U;
         private System.Windows.Forms.ColumnHeader H_D;
         private System.Windows.Forms.Button bt_CLEAR;
+        private System.Windows.Forms.Label lb_NO_ENTRIES;
+        private System.Windows.Forms.StatusStrip statusStrip1;
     }
 }
 

@@ -20,33 +20,12 @@ namespace BusinessDataFetcher
             }
         }
 
-        public static string[] GetFirmsHTMLCollection(string html)
-        {
-            string pattern = "<p>(.*?)</p>";
-            List<string> list = new List<string>();
-            MatchCollection col = Regex.Matches(html, pattern, RegexOptions.Singleline);
-            foreach (Match m in col)
-            {
-                list.Add(m.Groups[1].Value);
-            }
-            return list.ToArray();
-        }
-
-        public static string GetFirmsListHTML(string html)
-        {
-            string rStart = "<div id=\"pager_bot\"></div>.*</div>";
-            string rEnd = "<div class=\"clear\"></div>.*<div class=\"adsense_bottom\">";
-            Match match = Regex.Match(html, rStart + "(.*?)" + rEnd, RegexOptions.Singleline);
-            string output = match.Success ? match.Groups[1].Value : String.Empty;
-            return output;
-        }
-
         public static List<BasicFirm> GetBasicFirms(string[] data)
         {
             List<BasicFirm> list = new List<BasicFirm>();
-            string urlPattern = "<a href=\"(.*?)\">";
+            string urlPattern = "<a href=\"(.*?)\".*?>";
             string namePattern = "<b>(.*?)</b>";
-            string addressPattern = "</a>.*?<br.*?>(.*?)<br.*?>(.*)";
+            string addressPattern = "</a>.*?(<br.*?>)?(.*?)<br.*?>(.*)";
             int i = 0;
             foreach (string f in data)
             {
@@ -76,9 +55,9 @@ namespace BusinessDataFetcher
                 string description = String.Empty;
                 if (m.Success)
                 {
-                    // deletes all windows strange new line breaks
-                    description = Regex.Replace(m.Groups[1].Value, @"\r\n", "", RegexOptions.Singleline).Trim();
-                    address = m.Groups[2].Value.Trim();
+                    description = m.Groups[2].Value.Trim();
+                    description = (description == String.Empty) ? "BRAK" : description;
+                    address = m.Groups[3].Value.Trim();
 
                     Logger.WriteLine(address, ConsoleColor.DarkGreen);
                     Logger.WriteLine(description, ConsoleColor.DarkGreen);
@@ -89,6 +68,41 @@ namespace BusinessDataFetcher
                 i++;
             }
             return list;
+        }
+
+        public static string[] GetFirmsHTMLCollection(string html)
+        {
+            string pattern = "<p>(.*?)</p>";
+            List<string> list = new List<string>();
+            MatchCollection col = Regex.Matches(html, pattern, RegexOptions.Singleline);
+            foreach (Match m in col)
+            {
+                list.Add(m.Groups[1].Value);
+            }
+            return list.ToArray();
+        }
+
+        public static string GetFirmsListHTML(string html)
+        {
+            string pattern = "<div id=\"main\">.*?<div.*?>.*?<p class=\"nag\">.*?</p>.*?<p>(.*?)<div.*?>";
+            Match match = Regex.Match(html, pattern, RegexOptions.Singleline);
+            string output = match.Success ? match.Groups[1].Value : String.Empty;
+            output = RemoveNewLines(output);
+            //add paragraph tag, cause the pattern strips one
+            return "<p>" + output;
+        }
+
+        public static string GetCAPTCHAForm(string html)
+        {
+            string pattern = "<div id=\"all\">.*?(<form action.*? id=\"cf\".*?>.*?</form>)";
+            Match m = Regex.Match(html, pattern, RegexOptions.Singleline);
+
+            return m.Success ? m.Groups[1].Value : null;
+        }
+
+        public static string RemoveNewLines(string x)
+        {
+            return x.Replace("\r", string.Empty).Replace("\n", string.Empty);
         }
 
         public static string TrimJS(string htmlDocText)

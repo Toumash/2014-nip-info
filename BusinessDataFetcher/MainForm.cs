@@ -14,31 +14,27 @@ namespace BusinessDataFetcher
     {
         public static readonly bool DEBUG = Preferences.DEBUG;
         public readonly static Encoding ENCODING = Encoding.GetEncoding("iso-8859-2");
+        public static readonly bool LOG = Preferences.LOG;
         private const string BASE_URL = "http://www.krs-online.com.pl/";
         private const string SEARCH_URL = "http://www.krs-online.com.pl/?p=6&look=";
         private List<BasicFirm> BasicList = new List<BasicFirm>();
-        private WebClient Wc;
         private string NIP = String.Empty;
+        private WebClient Wc;
 
         public MainForm()
         {
             InitializeComponent();
 
-            if (DEBUG) Logger.Init();
+            if (LOG) Logger.Init();
 
             Wc = new WebClient();
 
+            ShowNoItems(false);
             //if (DEBUG)
             //{
             //    string input = File.ReadAllText("input.txt", ENCODING);
             //    ParseListDownload(input);
             //}
-        }
-
-        public void InitWebClient(ref WebClient wc)
-        {
-            Wc.Encoding = ENCODING;
-            HTMLHelper.AddHeadersTo(ref Wc);
         }
 
         public void DownloadFullData(List<BasicFirm> list)
@@ -56,7 +52,9 @@ namespace BusinessDataFetcher
                         Logger.WriteLine("Downloading for:" + request.Name + " Started", ConsoleColor.DarkCyan);
                         string result = wc.DownloadString(new Uri(BASE_URL + request.Url));
                         string withoutJS = HTMLHelper.TrimJS(result);
-                        string html = Regex.Match(withoutJS, "<p class=\"nag\">(.*?)<div class=\"adsense_bottom\">(.*?)<div id=\"bottom\">", RegexOptions.Singleline).Groups[1].Value;
+                        string html = Regex.Match(withoutJS,
+                            "<p class=\"nag\">(.*?)<div class=\"adsense_bottom\">(.*?)<div id=\"bottom\">",
+                            RegexOptions.Singleline).Groups[1].Value;
 
                         Logger.WriteLine("Downloading for:" + request.Name + " FINISHED" + html, ConsoleColor.Green);
                     }
@@ -64,13 +62,14 @@ namespace BusinessDataFetcher
                     {
                         Logger.WriteLine("Exception thrown" + e.ToString());
                     }
-                    if (DEBUG) Thread.Sleep(5000);
+                    if (LOG) Thread.Sleep(5000);
                 }
             }).Start();
         }
 
         public void DownloadListStart(string url)
         {
+            ShowNoItems(false);
             Wc.CancelAsync();
             Wc = new WebClient();
             InitWebClient(ref Wc);
@@ -80,22 +79,37 @@ namespace BusinessDataFetcher
             Logger.WriteLine("Downloading started. Url: " + url);
         }
 
+        public void InitWebClient(ref WebClient wc)
+        {
+            Wc.Encoding = ENCODING;
+            HTMLHelper.AddHeadersTo(ref Wc);
+        }
+
         public void ParseListDownload(string input)
         {
             Logger.WriteLine("Page Fetched.");
             string html = HTMLHelper.TrimJS(input);
-
-            List<BasicFirm> col = HTMLHelper.GetBasicFirms(HTMLHelper.GetFirmsHTMLCollection(HTMLHelper.GetFirmsListHTML(html)));
-            textBox1.Enabled = true;
-
-            if (col.Count > 0)
+            string form = HTMLHelper.GetCAPTCHAForm(html);
+            if (form != null)
             {
-                BasicList.AddRange(col);
-                PopulateListView(col);
+                new CaptchaUnlockerForm().ShowDialog();
             }
             else
             {
-                MessageBox.Show("Brak wyników", "Brak danych");
+                List<BasicFirm> col = HTMLHelper.GetBasicFirms(HTMLHelper.GetFirmsHTMLCollection(HTMLHelper.GetFirmsListHTML(html)));
+
+                tb_OUT.Enabled = true;
+
+                if (col.Count > 0)
+                {
+                    ShowNoItems(false);
+                    BasicList.AddRange(col);
+                    PopulateListView(col);
+                }
+                else
+                {
+                    ShowNoItems(true);
+                }
             }
         }
 
@@ -104,7 +118,7 @@ namespace BusinessDataFetcher
             foreach (BasicFirm b in list)
             {
                 string[] row = { b.Description, b.Address.SeparateBy(","), b.Url };
-                listView1.Items.Add(b.Name).SubItems.AddRange(row);
+                lv_MAIN.Items.Add(b.Name).SubItems.AddRange(row);
             }
         }
 
@@ -113,15 +127,28 @@ namespace BusinessDataFetcher
             UseWaitCursor = x;
         }
 
+        public void ShowNoItems(bool x)
+        {
+            lb_NO_ENTRIES.Visible = x;
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (DEBUG)
+            if (LOG)
             {
                 Logger.WriteLine("CLOSING APPLICATION...", ConsoleColor.Red);
                 Thread.Sleep(300);
                 Logger.Dispose();
             }
             base.OnClosing(e);
+        }
+
+        private void bt_CLEAR_Click(object sender, EventArgs e)
+        {
+            BasicList.Clear();
+            lv_MAIN.Items.Clear();
+            tb_OUT.Enabled = false;
+            tb_OUT.Clear();
         }
 
         private void bt_serach_Click(object sender, EventArgs e)
@@ -138,7 +165,7 @@ namespace BusinessDataFetcher
         {
             string output = String.Empty;
 
-            foreach (ListViewItem x in listView1.SelectedItems)
+            foreach (ListViewItem x in lv_MAIN.SelectedItems)
             {
                 int i = x.Index;
                 if (i >= 0 && i < BasicList.Count)
@@ -148,7 +175,15 @@ namespace BusinessDataFetcher
                     output += string.Join(";", fields) + Environment.NewLine;
                 }
             }
-            textBox1.Text = output;
+            tb_OUT.Text = output;
+        }
+
+        private void tb_NIP_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                bt_SEARCH.PerformClick();
+            }
         }
 
         private void ts_About_Click(object sender, EventArgs e)
@@ -167,6 +202,7 @@ namespace BusinessDataFetcher
             if (!e.Cancelled && e.Error == null)
             {
                 string result = ENCODING.GetString(e.Result);
+                Logger.WriteLine(result, ConsoleColor.DarkCyan);
                 ParseListDownload(result);
             }
             else
@@ -184,21 +220,6 @@ namespace BusinessDataFetcher
             else
             {
                 MessageBox.Show(e.Error.Message, "Błąd przy pobiereaniu danych");
-            }
-        }
-
-        private void bt_CLEAR_Click(object sender, EventArgs e)
-        {
-            BasicList.Clear();
-            listView1.Items.Clear();
-            textBox1.Enabled = false;
-        }
-
-        private void tb_NIP_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                bt_serach.PerformClick();
             }
         }
     }

@@ -66,6 +66,12 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="CaptchaUnlockerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CaptchaUnlockerForm.Designer.cs">
+      <DependentUpon>CaptchaUnlockerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Address.cs" />
     <Compile Include="Model\Firm.cs" />
     <Compile Include="MainForm.cs">
@@ -83,6 +89,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CaptchaUnlockerForm.resx">
+      <DependentUpon>CaptchaUnlockerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
