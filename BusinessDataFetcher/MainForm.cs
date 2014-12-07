@@ -1,30 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Windows.Forms;
-using BusinessDataFetcher.Model;
-
-namespace BusinessDataFetcher
+﻿namespace BusinessDataFetcher
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Windows.Forms;
+
+    using BusinessDataFetcher.Model;
+
     public partial class MainForm : Form
     {
+        #region Fields
+
         public static readonly bool DEBUG = Preferences.DEBUG;
-        public readonly static Encoding ENCODING = Encoding.GetEncoding("iso-8859-2");
+        public static readonly Encoding ENCODING = Encoding.GetEncoding("iso-8859-2");
         public static readonly bool LOG = Preferences.LOG;
+
         private const string BASE_URL = "http://www.krs-online.com.pl/";
         private const string SEARCH_URL = "http://www.krs-online.com.pl/?p=6&look=";
+
         private List<BasicFirm> BasicList = new List<BasicFirm>();
         private string NIP = String.Empty;
         private WebClient Wc;
 
+        #endregion Fields
+
+        #region Constructors
+
         public MainForm()
         {
             InitializeComponent();
-
+            this.Icon = BusinessDataFetcher.Properties.Resources.icon_48x48;
             if (LOG) Logger.Init();
 
             Wc = new WebClient();
@@ -36,6 +46,10 @@ namespace BusinessDataFetcher
             //    ParseListDownload(input);
             //}
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void DownloadFullData(List<BasicFirm> list)
         {
@@ -149,6 +163,7 @@ namespace BusinessDataFetcher
             lv_MAIN.Items.Clear();
             tb_OUT.Enabled = false;
             tb_OUT.Clear();
+            tb_NIP.Focus();
         }
 
         private void bt_serach_Click(object sender, EventArgs e)
@@ -191,7 +206,12 @@ namespace BusinessDataFetcher
             new AboutBox().ShowDialog();
         }
 
-        private void ts_CloseApp_Click(object sender, EventArgs e)
+        private void ts_Clear_Click(object sender, EventArgs e)
+        {
+            bt_CLEAR.PerformClick();
+        }
+
+        private void ts_Close_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -222,5 +242,17 @@ namespace BusinessDataFetcher
                 MessageBox.Show(e.Error.Message, "Błąd przy pobiereaniu danych");
             }
         }
+
+        private void zapiszToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog x = new SaveFileDialog();
+            DialogResult dr = sfDialog.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                File.WriteAllText(sfDialog.FileName, tb_OUT.Text, Encoding.UTF8);
+            }
+        }
+
+        #endregion Methods
     }
 }

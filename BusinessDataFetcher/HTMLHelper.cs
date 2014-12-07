@@ -1,14 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text.RegularExpressions;
-using BusinessDataFetcher.Model;
-
-namespace BusinessDataFetcher
+﻿namespace BusinessDataFetcher
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Text.RegularExpressions;
+
+    using BusinessDataFetcher.Model;
+
     internal class HTMLHelper
     {
+        #region Fields
+
         public static readonly string[,] GOOD_HEADERS = Preferences.GOOD_HEADERS;
+
+        #endregion Fields
+
+        #region Methods
 
         public static void AddHeadersTo(ref WebClient wc)
         {
@@ -20,7 +27,7 @@ namespace BusinessDataFetcher
             }
         }
 
-        public static List<BasicFirm> GetBasicFirms(string[] data)
+        public static List<BasicFirm> GetBasicFirms(List<String> data)
         {
             List<BasicFirm> list = new List<BasicFirm>();
             string urlPattern = "<a href=\"(.*?)\".*?>";
@@ -70,7 +77,15 @@ namespace BusinessDataFetcher
             return list;
         }
 
-        public static string[] GetFirmsHTMLCollection(string html)
+        public static string GetCAPTCHAForm(string html)
+        {
+            string pattern = "<div id=\"all\">.*?(<form action.*? id=\"cf\".*?>.*?</form>)";
+            Match m = Regex.Match(html, pattern, RegexOptions.Singleline);
+
+            return m.Success ? m.Groups[1].Value : null;
+        }
+
+        public static List<String> GetFirmsHTMLCollection(string html)
         {
             string pattern = "<p>(.*?)</p>";
             List<string> list = new List<string>();
@@ -79,7 +94,7 @@ namespace BusinessDataFetcher
             {
                 list.Add(m.Groups[1].Value);
             }
-            return list.ToArray();
+            return list;
         }
 
         public static string GetFirmsListHTML(string html)
@@ -92,14 +107,6 @@ namespace BusinessDataFetcher
             return "<p>" + output;
         }
 
-        public static string GetCAPTCHAForm(string html)
-        {
-            string pattern = "<div id=\"all\">.*?(<form action.*? id=\"cf\".*?>.*?</form>)";
-            Match m = Regex.Match(html, pattern, RegexOptions.Singleline);
-
-            return m.Success ? m.Groups[1].Value : null;
-        }
-
         public static string RemoveNewLines(string x)
         {
             return x.Replace("\r", string.Empty).Replace("\n", string.Empty);
@@ -110,5 +117,7 @@ namespace BusinessDataFetcher
             string pattern = @"(?s)<script.*?(/>|</script>)";
             return Regex.Replace(htmlDocText, pattern, "", RegexOptions.Singleline);
         }
+
+        #endregion Methods
     }
 }

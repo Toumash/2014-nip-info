@@ -28,14 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tb_NIP = new System.Windows.Forms.TextBox();
             this.lb_instruction = new System.Windows.Forms.Label();
             this.bt_SEARCH = new System.Windows.Forms.Button();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.oProgramieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mStrip = new System.Windows.Forms.MenuStrip();
+            this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zapiszToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wyczyśćToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zamknijToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ts_About = new System.Windows.Forms.ToolStripMenuItem();
-            this.ts_CloseApp = new System.Windows.Forms.ToolStripMenuItem();
             this.tb_OUT = new System.Windows.Forms.TextBox();
             this.lv_MAIN = new System.Windows.Forms.ListView();
             this.H_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -44,8 +45,9 @@
             this.H_U = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.bt_CLEAR = new System.Windows.Forms.Button();
             this.lb_NO_ENTRIES = new System.Windows.Forms.Label();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.menuStrip1.SuspendLayout();
+            this.sStrip = new System.Windows.Forms.StatusStrip();
+            this.sfDialog = new System.Windows.Forms.SaveFileDialog();
+            this.mStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // tb_NIP
@@ -69,45 +71,60 @@
             // 
             this.bt_SEARCH.Location = new System.Drawing.Point(361, 24);
             this.bt_SEARCH.Name = "bt_SEARCH";
-            this.bt_SEARCH.Size = new System.Drawing.Size(75, 23);
+            this.bt_SEARCH.Size = new System.Drawing.Size(126, 23);
             this.bt_SEARCH.TabIndex = 1;
             this.bt_SEARCH.Text = "Szukaj";
             this.bt_SEARCH.UseVisualStyleBackColor = true;
             this.bt_SEARCH.Click += new System.EventHandler(this.bt_serach_Click);
             // 
-            // menuStrip1
+            // mStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.oProgramieToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip1.Size = new System.Drawing.Size(871, 24);
-            this.menuStrip1.TabIndex = 6;
-            this.menuStrip1.Text = "menuStrip1";
+            this.mStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.plikToolStripMenuItem,
+            this.ts_About});
+            this.mStrip.Location = new System.Drawing.Point(0, 0);
+            this.mStrip.Name = "mStrip";
+            this.mStrip.Size = new System.Drawing.Size(871, 24);
+            this.mStrip.TabIndex = 6;
+            this.mStrip.Text = "menuStrip1";
             // 
-            // oProgramieToolStripMenuItem
+            // plikToolStripMenuItem
             // 
-            this.oProgramieToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ts_About,
-            this.ts_CloseApp});
-            this.oProgramieToolStripMenuItem.Name = "oProgramieToolStripMenuItem";
-            this.oProgramieToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
-            this.oProgramieToolStripMenuItem.Text = "Program";
+            this.plikToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.zapiszToolStripMenuItem,
+            this.wyczyśćToolStripMenuItem,
+            this.zamknijToolStripMenuItem});
+            this.plikToolStripMenuItem.Name = "plikToolStripMenuItem";
+            this.plikToolStripMenuItem.Size = new System.Drawing.Size(38, 20);
+            this.plikToolStripMenuItem.Text = "Plik";
+            // 
+            // zapiszToolStripMenuItem
+            // 
+            this.zapiszToolStripMenuItem.Name = "zapiszToolStripMenuItem";
+            this.zapiszToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zapiszToolStripMenuItem.Text = "Zapisz...";
+            this.zapiszToolStripMenuItem.Click += new System.EventHandler(this.zapiszToolStripMenuItem_Click);
+            // 
+            // wyczyśćToolStripMenuItem
+            // 
+            this.wyczyśćToolStripMenuItem.Name = "wyczyśćToolStripMenuItem";
+            this.wyczyśćToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.wyczyśćToolStripMenuItem.Text = "Wyczyść";
+            this.wyczyśćToolStripMenuItem.Click += new System.EventHandler(this.ts_Clear_Click);
+            // 
+            // zamknijToolStripMenuItem
+            // 
+            this.zamknijToolStripMenuItem.Name = "zamknijToolStripMenuItem";
+            this.zamknijToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.zamknijToolStripMenuItem.Text = "Zamknij";
+            this.zamknijToolStripMenuItem.Click += new System.EventHandler(this.ts_Close_Click);
             // 
             // ts_About
             // 
             this.ts_About.Name = "ts_About";
-            this.ts_About.Size = new System.Drawing.Size(141, 22);
-            this.ts_About.Text = "O programie";
+            this.ts_About.Size = new System.Drawing.Size(86, 20);
+            this.ts_About.Text = "O Programie";
             this.ts_About.Click += new System.EventHandler(this.ts_About_Click);
-            // 
-            // ts_CloseApp
-            // 
-            this.ts_CloseApp.Name = "ts_CloseApp";
-            this.ts_CloseApp.Size = new System.Drawing.Size(141, 22);
-            this.ts_CloseApp.Text = "Zamknij";
-            this.ts_CloseApp.Click += new System.EventHandler(this.ts_CloseApp_Click);
             // 
             // tb_OUT
             // 
@@ -156,9 +173,9 @@
             // 
             // bt_CLEAR
             // 
-            this.bt_CLEAR.Location = new System.Drawing.Point(711, 25);
+            this.bt_CLEAR.Location = new System.Drawing.Point(667, 25);
             this.bt_CLEAR.Name = "bt_CLEAR";
-            this.bt_CLEAR.Size = new System.Drawing.Size(161, 23);
+            this.bt_CLEAR.Size = new System.Drawing.Size(205, 23);
             this.bt_CLEAR.TabIndex = 10;
             this.bt_CLEAR.Text = "Wyczyść";
             this.bt_CLEAR.UseVisualStyleBackColor = true;
@@ -175,22 +192,28 @@
             this.lb_NO_ENTRIES.TabIndex = 11;
             this.lb_NO_ENTRIES.Text = "BRAK WYNIKÓW";
             // 
-            // statusStrip1
+            // sStrip
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 336);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.statusStrip1.Size = new System.Drawing.Size(871, 22);
-            this.statusStrip1.SizingGrip = false;
-            this.statusStrip1.TabIndex = 12;
-            this.statusStrip1.Text = "statusStrip1";
+            this.sStrip.Location = new System.Drawing.Point(0, 336);
+            this.sStrip.Name = "sStrip";
+            this.sStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.sStrip.Size = new System.Drawing.Size(871, 22);
+            this.sStrip.SizingGrip = false;
+            this.sStrip.TabIndex = 12;
+            this.sStrip.Text = "statusStrip1";
+            // 
+            // sfDialog
+            // 
+            this.sfDialog.DefaultExt = "csv";
+            this.sfDialog.FileName = "plik";
+            this.sfDialog.Filter = "Excel CSV|*.csv";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(871, 358);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.sStrip);
             this.Controls.Add(this.lb_NO_ENTRIES);
             this.Controls.Add(this.bt_CLEAR);
             this.Controls.Add(this.lv_MAIN);
@@ -198,14 +221,13 @@
             this.Controls.Add(this.bt_SEARCH);
             this.Controls.Add(this.lb_instruction);
             this.Controls.Add(this.tb_NIP);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.mStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Firm data downloader";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.mStrip.ResumeLayout(false);
+            this.mStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,10 +238,7 @@
         private System.Windows.Forms.TextBox tb_NIP;
         private System.Windows.Forms.Label lb_instruction;
         private System.Windows.Forms.Button bt_SEARCH;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem oProgramieToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ts_CloseApp;
-        private System.Windows.Forms.ToolStripMenuItem ts_About;
+        private System.Windows.Forms.MenuStrip mStrip;
         private System.Windows.Forms.TextBox tb_OUT;
         private System.Windows.Forms.ListView lv_MAIN;
         public System.Windows.Forms.ColumnHeader H_Name;
@@ -228,7 +247,13 @@
         private System.Windows.Forms.ColumnHeader H_D;
         private System.Windows.Forms.Button bt_CLEAR;
         private System.Windows.Forms.Label lb_NO_ENTRIES;
-        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.StatusStrip sStrip;
+        private System.Windows.Forms.ToolStripMenuItem plikToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zapiszToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog sfDialog;
+        private System.Windows.Forms.ToolStripMenuItem wyczyśćToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem zamknijToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ts_About;
     }
 }
 

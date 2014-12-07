@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BusinessDataFetcher.Model
+﻿namespace BusinessDataFetcher.Model
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     namespace Model
     {
         public class Firm

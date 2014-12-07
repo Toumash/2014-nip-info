@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-
-namespace BusinessDataFetcher
+﻿namespace BusinessDataFetcher
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
+    using System.Text;
+
     internal static class NativeMethods
     {
+        #region Methods
+
         // http://msdn.microsoft.com/en-us/library/ms681944(VS.85).aspx
         /// <summary>
         /// Allocates a new console for the calling process.
@@ -30,5 +32,7 @@ namespace BusinessDataFetcher
         /// </remarks>
         [DllImport("kernel32.dll", SetLastError = true)]
         internal static extern int FreeConsole();
+
+        #endregion Methods
     }
 }

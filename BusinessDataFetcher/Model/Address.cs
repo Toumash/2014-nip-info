@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace BusinessDataFetcher
+﻿namespace BusinessDataFetcher
 {
+    using System;
+
     namespace Model
     {
         public class Address

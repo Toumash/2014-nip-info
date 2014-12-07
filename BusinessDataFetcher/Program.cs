@@ -1,10 +1,12 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace BusinessDataFetcher
+﻿namespace BusinessDataFetcher
 {
+    using System;
+    using System.Windows.Forms;
+
     internal static class Program
     {
+        #region Methods
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -15,5 +17,7 @@ namespace BusinessDataFetcher
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
         }
+
+        #endregion Methods
     }
 }
